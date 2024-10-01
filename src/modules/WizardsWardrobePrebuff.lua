@@ -260,11 +260,20 @@ function WWP.CreatePrebuffWindow()
 					return
 				end
 
-				if progression:IsChainingAbility() then
-					abilityId = GetEffectiveAbilityIdForAbilityOnHotbar( abilityId, GetActiveHotbarCategory() )
-				end
+        local apiVersion = GetAPIVersion()
+        if apiVersion >= 101042 then
+          if not progression:GetSkillData():IsCraftedAbility() then
+            if progression:IsChainingAbility() then
+              abilityId = GetEffectiveAbilityIdForAbilityOnHotbar( abilityId, GetActiveHotbarCategory() )
+            end
+          end
+        else
+          if progression:IsChainingAbility() then
+            abilityId = GetEffectiveAbilityIdForAbilityOnHotbar( abilityId, GetActiveHotbarCategory() )
+          end
+        end
 
-				ClearCursor()
+        ClearCursor()
 
 				local previousAbilityId = WW.prebuffs[ i ][ slot + 2 ]
 				WW.prebuffs[ i ][ slot + 2 ] = abilityId
